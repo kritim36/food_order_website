@@ -2,6 +2,13 @@
 
     <div class="main-content">
         <h1>Add Admin</h1>
+        <?php 
+            if(isset($_SESSION['add'])) //Check whether the session is set or not
+            {
+                echo $_SESSION['add']; //Displaying session message
+                unset($_SESSION['add']); //Removing session message
+            }
+        ?>
         <!-- Your main content goes here -->
         <div class="add-admin-form">
             <form action="" method="POST">
@@ -52,10 +59,16 @@
 
        //create a session variable to display message
        $_SESSION['add'] = "Admin Added Sucessfully";
-       //Redirect Page
-       header("location:")
+       //Redirect Page to Manage Admin
+       header("location:".SITEURL.'admin/manage-admin.php');
     }else{
-        echo "Failed to insert data";
+        //echo "Failed to insert data";
+
+         //create a session variable to display message
+       $_SESSION['add'] = "Failed To Add Admin";
+       //Redirect Page to Manage Admin
+       header("location:".SITEURL.'admin/add-admin.php');
+
     }
 
   }

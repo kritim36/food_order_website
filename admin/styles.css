@@ -91,16 +91,17 @@
     background-color: #f2f2f2;
 }
 
-.admin-table button {
+.admin-table button a{
     padding: 5px 10px;
     background-color: #ff6b81;
     color: #fff;
+    text-decoration: none;
     border: none;
     cursor: pointer;
     margin-right: 5px;
 }
 
-.admin-table button:hover {
+.admin-table button a:hover {
     background-color: #ff3d53;
 }
 

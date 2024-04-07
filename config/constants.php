@@ -2,7 +2,7 @@
 //start session
 session_start();
 
-define('SITEURL','http://localhost/food/index.html/');
+define('SITEURL','http://localhost/food/');
 //Database connection
 $servername = "localhost";
 $username = "root";
