@@ -3,8 +3,16 @@
     <div class="main-content">
         <h1>Manage Category</h1>
         <!-- Your main content goes here -->
+        <?php 
+            if(isset($_SESSION['add'])) //Check whether the session is set or not
+            {
+                echo $_SESSION['add']; //Displaying session message
+                unset($_SESSION['add']); //Removing session message
+            }
+        ?>
+        
         <div class="admin-btn">
-            <button>Add Category</button>
+            <a href="<?php echo SITEURL; ?>admin/add-category.php">Add Category</a>
         </div>
         <div class="admin-table">
             <table>

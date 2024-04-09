@@ -2,6 +2,13 @@
 
     <div class="main-content">
         <h1>Dashboard</h1>
+        <?php
+             if(isset($_SESSION['login']))
+             {
+                 echo $_SESSION['login']; //Displaying session message
+                 unset($_SESSION['login']); //Removing session message
+             }
+        ?>
         <!-- Your main content goes here -->
         <div class="dashboard-boxes">
             <div class="dashboard-box">
