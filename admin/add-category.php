@@ -17,6 +17,12 @@
                 echo $_SESSION['add']; //Displaying session message
                 unset($_SESSION['add']); //Removing session message
             }
+
+            if(isset($_SESSION['upload'])) //Check whether the session is set or not
+            {
+                echo $_SESSION['upload']; //Displaying session message
+                unset($_SESSION['upload']); //Removing session message
+            }
         ?>
 
         <form action="" method="POST" enctype="multipart/form-data">
@@ -64,12 +70,47 @@
                 }
 
                 //Check whether the image is selected or not and set the value for image name accordingly
-                print_r($_FILES['image']);
+                // print_r($_FILES['image']);
+                // die();
+
+                if(isset($_FILES['image']['name']))
+                {
+                    //To upload the image we need image name, source path and destination path
+                    $image_name = $_FILES['image']['name'];
+
+                    //Auto rename our image
+                    //Get the extension of our image(jpg,png,gif etc)
+
+                    $ext = end(explode('.' , $image_name));
+
+                    //Rename the image
+                    $image_name = "Food_Category_".rand(000,999).'.'.$ext;
+
+                    $source_path = $_FILES['image']['tmp_name'];
+                    $destination_path = "../images/category/".$image_name;
+
+                    //Finally Upload the image
+                    $upload = move_uploaded_file($source_path, $destination_path);
+
+                    //Check whether the image is uploaded or not
+                    if($upload==FALSE)
+                    {
+                        $_SESSION['upload'] = "Failed to upload the image";
+                        header("location:".SITEURL.'admin/add-category.php');
+
+                        //Stop the process
+                        die();
+                    }
+                }else
+                {
+                    $image_name = "";
+                }
 
 
                 //Sql query to insert data into database
                 $sql = "INSERT INTO category SET 
                     title = '$title',
+                    image_name = '$image_name',
                     featured = '$featured',
                     active = '$active'
                 ";

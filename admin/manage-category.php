@@ -9,6 +9,18 @@
                 echo $_SESSION['add']; //Displaying session message
                 unset($_SESSION['add']); //Removing session message
             }
+
+            if(isset($_SESSION['remove'])) //Check whether the session is set or not
+            {
+                echo $_SESSION['remove']; //Displaying session message
+                unset($_SESSION['remove']); //Removing session message
+            }
+
+            if(isset($_SESSION['delete'])) //Check whether the session is set or not
+            {
+                echo $_SESSION['delete']; //Displaying session message
+                unset($_SESSION['delete']); 
+            }
         ?>
         
         <div class="admin-btn">
@@ -19,19 +31,68 @@
                 <thead>
                     <tr>
                         <th>S.No.</th>
-                        <th>Full Name</th>
-                        <th>Username</th>
+                        <th>Title</th>
+                        <th>Image</th>
+                        <th>Featured</th>
+                        <th>Active</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Table data will be populated here -->
-                    <tr>
-                        <td>1</td>
-                        <td>John Doe</td>
-                        <td>johndoe</td>
-                        <td><button>Edit</button><button>Delete</button></td>
-                    </tr>
+                    <?php
+                        $sql = "SELECT * FROM category";
+                        $res = mysqli_query($conn,$sql);
+                        $count = mysqli_num_rows($res);
+                        $sn=1;
+                        if($count > 0)
+                        {
+                            while($rows=mysqli_fetch_assoc($res))
+                            {
+                                $id=$rows['id'];
+                                $title=$rows['title'];
+                                $image_name=$rows['image_name'];
+                                $featured=$rows['featured'];
+                                $active=$rows['active'];
+                            ?>
+                                 <tr>
+                                    <td><?php echo $sn++; ?></td>
+                                    <td><?php echo $title; ?></td>
+
+                                    <td>
+                                        <?php 
+                                            //Check whether the image name is available or not
+                                            if($image_name!="")
+                                            {
+                                                ?>
+                                                <img src="<?php echo SITEURL;?>images/category/<?php echo $image_name; ?>" width ="100px">
+                                                <?php
+                                            }
+                                            else
+                                            {
+                                                echo "Image not added";
+                                            }
+                                        ?>
+                                    </td>
+                                    <td><?php echo $featured; ?></td>
+                                    <td><?php echo $active; ?></td>
+                                    <td>
+                                        <button>Edit</button>
+                                        <button><a href="<?php echo SITEURL; ?>admin/delete-category.php?id=<?php echo $id; ?>&image_name=<?php echo $image_name;?>">Delete</a></button>
+                                </tr>
+                            <?php
+
+                            }  
+                        }else{
+                            //we will display the message inside the table
+                            ?>
+                            <tr>
+                                <td colspan = "6">No Category Added </td>
+                            <tr>
+                            <?php
+
+                        }
+                    ?>
+                   
                     <!-- Add more rows as needed -->
                 </tbody>
             </table>
