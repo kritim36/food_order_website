@@ -2,9 +2,16 @@
 
     <div class="main-content">
         <h1>Manage Food</h1>
+        <?php 
+            if(isset($_SESSION['add'])) //Check whether the session is set or not
+            {
+                echo $_SESSION['add']; //Displaying session message
+                unset($_SESSION['add']); //Removing session message
+            }
+        ?>
         <!-- Your main content goes here -->
         <div class="admin-btn">
-            <button>Add Food</button>
+            <a href="<?php echo SITEURL; ?>admin/add-food.php">Add Food</a>
         </div>
         <div class="admin-table">
             <table>

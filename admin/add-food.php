@@ -1,23 +1,8 @@
-<?php include('partials/menu.php'); ?>
+<?php include('partials/menu.php') ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Category</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="add-admin-form">
+<div class="add-admin-form">
         <h2>Add Category</h2>
         <?php 
-            if(isset($_SESSION['add'])) //Check whether the session is set or not
-            {
-                echo $_SESSION['add']; //Displaying session message
-                unset($_SESSION['add']); //Removing session message
-            }
-
             if(isset($_SESSION['upload'])) //Check whether the session is set or not
             {
                 echo $_SESSION['upload']; //Displaying session message
@@ -28,7 +13,50 @@
         <form action="" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Title:</label>
-                <input type="text" id="title" name="title" required>
+                <input type="text" id="title" name="title" placeholder="Title of the food" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea name="description" cols="30" rows="5" placeholder="Description of the food"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" required>
+            </div>
+            <div class="form-group">
+                <label for="image">Select Image:</label>
+                <input type="file" id="image" name="image" >
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select name="category">
+                    <?php
+                        //Create PHP code to display categories from database
+                        //1. Create Sql query to get all the active categories from database
+                        $sql = "SELECT * FROM category WHERE active = 'yes'";
+                        $res = mysqli_query($conn, $sql);
+                        $count = mysqli_num_rows($res);
+                        if($count>0)
+                        {
+                            while($row=mysqli_fetch_assoc($res))
+                            {
+                                $id = $row['id'];
+                                $title = $row['title'];
+
+                                ?>
+
+                                <option value="<?php echo $id; ?>"><?php echo $title; ?></option>
+
+                                <?php
+                            }
+                        }else{
+                            ?>
+                            <option value="0">No Category Found</option>
+                            <?php
+                        }
+                    ?>
+                    
+                </select>
             </div>
             <div class="form-group">
                 <label for="featured">Featured:</label>
@@ -40,12 +68,9 @@
                 <input type="radio" id="active" name="active" value="yes" checked> Yes
                 <input type="radio" id="active" name="active" value="no"> No
             </div>
+           
             <div class="form-group">
-                <label for="image">Select Image:</label>
-                <input type="file" id="image" name="image" >
-            </div>
-            <div class="form-group">
-                <button type="submit" name="submit">Add Category</button>
+                <button type="submit" name="submit">Add Food</button>
             </div>
         </form>
         <?php 
@@ -53,6 +78,9 @@
             {
                 //Get the value from the form
                 $title =$_POST['title'];
+                $description = $_POST['description'];
+                $price = $_POST['price'];
+                $category = $_POST['category'];
 
                 //For radio button, we need to check whether the button is selected or not
                 if(isset($_POST['featured']))
@@ -69,10 +97,6 @@
                     $featured = "No";
                 }
 
-                //Check whether the image is selected or not and set the value for image name accordingly
-                // print_r($_FILES['image']);
-                // die();
-
                 if(isset($_FILES['image']['name']))
                 {
                     //To upload the image we need image name, source path and destination path
@@ -87,19 +111,19 @@
                         $ext = end(explode('.' , $image_name));
 
                         //Rename the image
-                        $image_name = "Food_Category_".rand(000,999).'.'.$ext;
+                        $image_name = "Food_Name_".rand(000,999).'.'.$ext;
 
-                        $source_path = $_FILES['image']['tmp_name'];
-                        $destination_path = "../images/category/".$image_name;
+                        $src = $_FILES['image']['tmp_name'];
+                        $dst = "../images/food/".$image_name;
 
                         //Finally Upload the image
-                        $upload = move_uploaded_file($source_path, $destination_path);
+                        $upload = move_uploaded_file($src, $dst);
 
                         //Check whether the image is uploaded or not
                         if($upload==FALSE)
                         {
                             $_SESSION['upload'] = "Failed to upload the image";
-                            header("location:".SITEURL.'admin/add-category.php');
+                            header("location:".SITEURL.'admin/add-food.php');
 
                             //Stop the process
                             die();
@@ -112,30 +136,30 @@
 
 
                 //Sql query to insert data into database
-                $sql = "INSERT INTO category SET 
+                $sql2 = "INSERT INTO item SET 
                     title = '$title',
+                    description = '$description',
+                    price = $price,
                     image_name = '$image_name',
+                    category_id = '$category',
                     featured = '$featured',
                     active = '$active'
                 ";
 
                 //Execute the query
-                $res = mysqli_query($conn,$sql);
+                $res2 = mysqli_query($conn,$sql2);
 
-                if($res==TRUE){
+                if($res2==TRUE){
                     
-                    $_SESSION['add'] = "Category Added Sucessfully";
-                    header("location:".SITEURL.'admin/manage-category.php');
+                    $_SESSION['add'] = "Food Added Sucessfully";
+                    header("location:".SITEURL.'admin/manage-food.php');
                  }else{
-                    $_SESSION['add'] = "Failed To Add Category";
-                    header("location:".SITEURL.'admin/add-category.php');
+                    $_SESSION['add'] = "Failed To Add Food";
+                    header("location:".SITEURL.'admin/add-food.php');
              
                  }
             }
         ?>
     </div>
-</body>
-</html>
 
-
-<?php include('partials/footer.php'); ?>
+<?php include('partials/footer.php') ?>

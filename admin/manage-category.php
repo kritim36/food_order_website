@@ -16,10 +16,34 @@
                 unset($_SESSION['remove']); //Removing session message
             }
 
-            if(isset($_SESSION['delete'])) //Check whether the session is set or not
+            if(isset($_SESSION['delete'])) 
             {
-                echo $_SESSION['delete']; //Displaying session message
+                echo $_SESSION['delete']; 
                 unset($_SESSION['delete']); 
+            }
+
+            if(isset($_SESSION['no-category-found'])) 
+            {
+                echo $_SESSION['no-category-found']; 
+                unset($_SESSION['no-category-found']); 
+            }
+
+            if(isset($_SESSION['update'])) 
+            {
+                echo $_SESSION['update']; 
+                unset($_SESSION['update']); 
+            }
+
+            if(isset($_SESSION['upload'])) 
+            {
+                echo $_SESSION['upload']; 
+                unset($_SESSION['upload']); 
+            }
+
+            if(isset($_SESSION['failed-remove'])) 
+            {
+                echo $_SESSION['failed-remove']; 
+                unset($_SESSION['failed-remove']); 
             }
         ?>
         
@@ -76,7 +100,7 @@
                                     <td><?php echo $featured; ?></td>
                                     <td><?php echo $active; ?></td>
                                     <td>
-                                        <button>Edit</button>
+                                        <button><a href="<?php echo SITEURL; ?>admin/update-category.php?id=<?php echo $id; ?>">Update Category</a></button>
                                         <button><a href="<?php echo SITEURL; ?>admin/delete-category.php?id=<?php echo $id; ?>&image_name=<?php echo $image_name;?>">Delete</a></button>
                                 </tr>
                             <?php
