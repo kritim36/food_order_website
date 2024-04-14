@@ -88,7 +88,7 @@
                                             if($image_name!="")
                                             {
                                                 ?>
-                                                <img src="<?php echo SITEURL;?>images/category/<?php echo $image_name; ?>" width ="100px">
+                                                <img src="<?php echo SITEURL;?>images/category/<?php echo $image_name; ?>" width ="45px">
                                                 <?php
                                             }
                                             else
@@ -126,4 +126,6 @@
     </div>
     
 
-<?php include('partials/footer.php'); ?>
+<?php 
+// include('partials/footer.php'); 
+?>
