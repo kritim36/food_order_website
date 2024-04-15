@@ -6,7 +6,7 @@
 
         <?php
             // Check if 'search' is set in POST data
-            $search = isset($_POST['search']) ? $_POST['search'] : '';
+            $search = isset($_POST['search']) ? mysqli_real_escape_string($conn,$_POST['search']) : '';
         ?>
             <?php
                 // $search = $_POST['search'];

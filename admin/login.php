@@ -99,8 +99,12 @@
     if(isset($_POST['submit']))
     {
         //get the data from the form
-        $username = $_POST['username'];
-        $password = md5($_POST['password']);
+        // $username = $_POST['username'];
+        // $password = md5($_POST['password']);
+
+         $username = mysqli_real_escape_string($conn,$_POST['username']);
+         $raw_password = md5($_POST['password']);
+         $password = mysqli_real_escape_string($conn,$raw_password);
 
         //sql query to check whether the user with the username and password exist or not
         $sql = "SELECT * FROM admin WHERE username='$username' AND password='$password'";
